@@ -1,0 +1,54 @@
+import numpy as np
+import fetchmaker
+from scipy.stats import binom_test
+from scipy.stats import f_oneway
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+from scipy.stats import chi2_contingency
+
+rottweiler_tl= fetchmaker.get_tail_length('rottweiler')
+
+print(np.mean(rottweiler_tl))
+print(np.std(rottweiler_tl))
+
+#Are whippets more or less likely to be a rescue.
+whippet_rescue= fetchmaker.get_is_rescue('whippet')
+
+num_whippet_rescues= np.count_nonzero(whippet_rescue)
+
+num_whippets= np.size(whippet_rescue)
+
+pval= binom_test(num_whippet_rescues, n=num_whippets, p=0.08)
+print(pval)
+
+#Is there a difference in the average weights of three dog breeds
+w=fetchmaker.get_weight('whippet')
+t=fetchmaker.get_weight('terrier')
+p=fetchmaker.get_weight('pitbull')
+
+stat, p_val= f_oneway(w, t, p)
+print(p_val)
+
+d= np.concatenate([w, t, p])
+labels= ['w']*len(w) + ['t']*len(t) + ['p']*len(p)
+
+tukey_results= pairwise_tukeyhsd(d, labels, 0.05)
+print(tukey_results)
+
+#Table of poodle & shihtzu colors
+poodle_colors= fetchmaker.get_color("poodle")
+shihtzu_colors= fetchmaker.get_color("shihtzu")
+pblack= np.count_nonzero(poodle_colors == "black")
+sblack= np.count_nonzero(shihtzu_colors == "black")
+pbrown= np.count_nonzero(poodle_colors == "brown")
+sbrown= np.count_nonzero(shihtzu_colors == "brown")
+pgold= np.count_nonzero(poodle_colors == "gold")
+sgold= np.count_nonzero(shihtzu_colors == "gold")
+pgrey= np.count_nonzero(poodle_colors == "grey")
+sgrey= np.count_nonzero(shihtzu_colors == "grey")
+pwhite= np.count_nonzero(poodle_colors == "white")
+swhite= np.count_nonzero(shihtzu_colors == "white")
+color_table = [[pblack, sblack], [pbrown, sbrown], [pgold, sgold], [pgrey, sgrey], [pwhite, swhite]]
+print(color_table)
+
+stat, p_value, dof, expected = chi2_contingency(color_table)
+print(p_value)
