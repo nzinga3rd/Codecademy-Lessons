@@ -26,3 +26,11 @@ my_apt = [[2, 2.5, 1100, 30, 2, 2, 0, 1, 1, 1, 1, 0, 1, 1]]
 predict = mlr.predict(my_apt)
 
 print("Predicted rent: $%.2f" % predict)
+
+plt.scatter(y_test, y_predict)
+plt.xlabel('Actual Rent Prices')
+plt.ylabel('Predicted Rent Prices')
+plt.title('Actual VS Predict Rent Prices')
+plt.show()
+
+
