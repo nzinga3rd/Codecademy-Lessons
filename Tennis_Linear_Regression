@@ -1,0 +1,54 @@
+import codecademylib3_seaborn
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# load and investigate the data here:
+Tennis_stats = pd.read_csv('tennis_stats.csv')
+#print(df.head())
+
+# perform exploratory analysis here:
+'''plt.scatter(Tennis_stats.Aces, Tennis_stats.Wins, alpha=0.5)
+plt.show()
+plt.scatter(Tennis_stats.ServiceGamesPlayed, Tennis_stats.Wins, alpha=0.5)
+plt.show()
+plt.scatter(Tennis_stats.BreakPointsOpportunities, Tennis_stats.Wins, alpha=0.5)
+plt.show()
+plt.scatter(Tennis_stats.ReturnGamesPlayed, Tennis_stats.Wins, alpha=0.5)
+plt.show()
+plt.scatter(Tennis_stats.TotalPointsWon, Tennis_stats.Wins, alpha=0.5)
+plt.show()'''
+
+## perform single feature linear regressions here:
+df=pd.DataFrame(Tennis_stats)
+
+x1 = df[['TotalPointsWon']]
+x2 = df[['ReturnGamesPlayed']]
+x3 = df[['BreakPointsOpportunities']]
+x4 = df[['ServiceGamesPlayed']]
+x5 = df[['Aces']]
+
+y1 = df[['Winnings']]
+y2 = df[['Wins']]
+
+x_train, x_test, y_train, y_test = train_test_split(x4, y2, train_size = 0.8, test_size = 0.2)
+
+lr = LinearRegression()
+lr.fit(x_train, y_train)
+
+y_predict = lr.predict(x_test)
+
+plt.scatter(y_test, y_predict, alpha=0.5)
+
+## perform two feature linear regressions here:
+
+
+
+
+
+## perform multiple feature linear regressions here:
+
+
+
+
