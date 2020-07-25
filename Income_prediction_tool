@@ -1,0 +1,55 @@
+from tree import training_data, training_labels, testing_data, testing_labels, make_random_forest, make_single_tree, classify
+import numpy as np
+import random
+np.random.seed(1)
+random.seed(1)
+from collections import Counter
+
+def warn(*args, **kwargs):
+    pass
+import warnings
+warnings.warn = warn
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
+
+income_data = pd.read_csv('income.csv', header = 0, delimiter = ", ")
+
+print(income_data.iloc[0])
+
+income_data["sex-int"] = income_data["sex"].apply(lambda row: 0 if row == "Male" else 1)
+
+income_data["country-int"] = income_data["native-country"].apply(lambda row: 0 if row == "United-States" else 1)
+
+labels = income_data[['income']]
+data = income_data[["age", "capital-gain", "capital-loss", "hours-per-week", 'sex-int', "country-int"]]
+
+#print(income_data["native-country"].value_counts())
+
+train_data, test_data, train_labels, test_labels = train_test_split(data, labels, random_state = 1)
+
+forest = RandomForestClassifier(random_state = 1)
+
+forest.fit(train_data, train_labels)
+print(forest.score(test_data, test_labels))
+tree = make_single_tree(training_data, training_labels)
+single_tree_correct = 0
+
+forest = make_random_forest(40, training_data, training_labels)
+forest_correct = 0
+
+for i in range(len(testing_data)):
+  prediction = classify(testing_data[i], tree)
+  if prediction == testing_labels[i]:
+    single_tree_correct += 1
+  predictions = []
+  for forest_tree in forest:
+    predictions.append(classify(testing_data[i], forest_tree))
+  forest_prediction = max(predictions,key=predictions.count)
+  if forest_prediction == testing_labels[i]:
+    forest_correct += 1
+    
+print(single_tree_correct/len(testing_data))
+print(forest_correct/len(testing_data))
