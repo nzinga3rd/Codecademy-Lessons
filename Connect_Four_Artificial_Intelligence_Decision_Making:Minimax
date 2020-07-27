@@ -1,0 +1,165 @@
+from connect_four import *
+import random
+random.seed(108)
+
+new_board = make_board()
+
+def minimax(input_board, is_maximizing, depth):
+  # Base case - the game is over, so we return the value of the board
+  if game_is_over(input_board) or depth == 0:
+    return [evaluate_board(input_board), ""]
+  best_move = ""
+  if is_maximizing == True:
+    best_value = -float("Inf")
+    symbol = "X"
+  else:
+    best_value = float("Inf")
+    symbol = "O"
+  for move in available_moves(input_board):
+    new_board = deepcopy(input_board)
+    select_space(new_board, move, symbol)
+    hypothetical_value = minimax(new_board, not is_maximizing, depth - 1)[0]
+    if is_maximizing == True and hypothetical_value > best_value:
+      best_value = hypothetical_value
+      best_move = move
+    if is_maximizing == False and hypothetical_value < best_value:
+      best_value = hypothetical_value
+      best_move = move
+  return [best_value, best_move]
+
+print(minimax(new_board, True, 3))
+
+def evaluate_board(board):
+    if has_won(board, "X"):
+      return float("Inf")
+    elif has_won(board, "O"):
+      return -float("Inf")
+    else:
+      num_top_x = 0
+      num_top_o = 0
+      for column in board:
+        for square in column:
+          if square == 'X':
+            num_top_x += 1
+          if square == 'O':
+            num_top_o += 1
+            break
+      return num_top_x - num_top_o
+
+print_board(board_one)
+print(evaluate_board(board_one))
+print_board(board_two)
+print(evaluate_board(board_two))
+print_board(board_three)
+print(evaluate_board(board_three))
+
+def minimax(input_board, is_maximizing, depth, alpha, beta):
+  # Base case - the game is over, so we return the value of the board
+  if game_is_over(input_board) or depth == 0:
+    return [evaluate_board(input_board), "", alpha, beta]
+  best_move = ""
+  if is_maximizing == True:
+    best_value = -float("Inf")
+    symbol = "X"
+  else:
+    best_value = float("Inf")
+    symbol = "O"
+  for move in available_moves(input_board):
+    new_board = deepcopy(input_board)
+    select_space(new_board, move, symbol)
+    hypothetical_value = minimax(new_board, not is_maximizing, depth - 1, alpha, beta)[0]
+    if is_maximizing == True and hypothetical_value > best_value:
+      best_value = hypothetical_value
+      alpha = max(alpha, best_value)
+      best_move = move
+    if is_maximizing == False and hypothetical_value < best_value:
+      best_value = hypothetical_value
+      beta = min(beta, best_value)
+      best_move = move
+    if alpha >= beta:
+      break
+  return [best_value, best_move, alpha, beta]
+  
+print_board(board)
+print(minimax(board, True, 6, -float("Inf"), float("Inf")))
+
+def two_ai_game():
+    my_board = make_board()
+    while not game_is_over(my_board):
+      # Fill in the third parameter for the first player's "intelligence"
+      result = minimax(my_board, True, 6, -float("Inf"), float("Inf"))
+      print( "X Turn\nX selected ", result[1])
+      print(result[1])
+      select_space(my_board, result[1], "X")
+      print_board(my_board)
+
+      if not game_is_over(my_board):
+        #Fill in the third parameter for the second player's "intelligence"
+        result = minimax(my_board, False, 6, -float("Inf"), float("Inf"))
+        print( "O Turn\nO selected ", result[1])
+        print(result[1])
+        select_space(my_board, result[1], "O")
+        print_board(my_board)
+    if has_won(my_board, "X"):
+        print("X won!")
+    elif has_won(my_board, "O"):
+        print("O won!")
+    else:
+        print("It's a tie!")
+
+two_ai_game()
+
+def random_eval(board):
+  return random.randint(-100, 100)
+
+def two_ai_game():
+    my_board = make_board()
+    while not game_is_over(my_board):
+      #The "X" player finds their best move.
+      result = minimax(my_board, True, 4, -float("Inf"), float("Inf"), codecademy_evaluate_board)
+      print( "X Turn\nX selected ", result[1])
+      print(result[1])
+      select_space(my_board, result[1], "X")
+      print_board(my_board)
+
+      if not game_is_over(my_board):
+        #The "O" player finds their best move
+        result = minimax(my_board, False, 4, -float("Inf"), float("Inf"), codecademy_evaluate_board)
+        print( "O Turn\nO selected ", result[1])
+        print(result[1])
+        select_space(my_board, result[1], "O")
+        print_board(my_board)
+    if has_won(my_board, "X"):
+        print("X won!")
+    elif has_won(my_board, "O"):
+        print("O won!")
+    else:
+        print("It's a tie!")
+
+#two_ai_game()
+new_board = make_board()
+select_space(new_board, 6, "X")  
+select_space(new_board, 5, "O")
+select_space(new_board, 1, "X")
+select_space(new_board, 5, "O")  
+select_space(new_board, 2, "X")
+select_space(new_board, 6, "O")
+select_space(new_board, 5, "X")
+select_space(new_board, 6, "O")
+
+def my_evaluate_board(board):
+  if has_won(board, 'X'):
+    return float('Inf')
+  if has_won(board, 'O'):
+    return -float('Inf')
+  x_two_streak = 0
+  o_two_streak = 0
+  for col in range(len(board)):
+    for row in range(len(board[0])):
+      if board[col][row] == "X" and board[col + 1][row] == "X":
+        x_two_streak += 1
+      if board[col][row] == "O" and board[col + 1][row] == "O":
+        o_two_streak += 1
+      return x_two_streak - o_two_streak
+
+print(my_evaluate_board(new_board))
