@@ -1,0 +1,40 @@
+CREATE TABLE homies (
+  id INTEGER,
+  name TEXT,
+  birthday DATE
+);
+
+INSERT INTO homies (id, name, birthday)
+VALUES (
+1, 'June Low', '1990-05-30');
+
+INSERT INTO homies (id, name, birthday)
+VALUES (
+2, 'Habu Ibro', '1972-09-18');
+
+INSERT INTO homies (id, name, birthday)
+VALUES (
+3, 'Les Brown', '2019-04-12');
+
+UPDATE homies
+SET name = 'June Hi'
+WHERE id = 1;
+
+ALTER TABLE homies
+ADD COLUMN email TEXT;
+
+UPDATE homies
+SET email = 'June@love.com'
+WHERE id = 1;
+
+UPDATE homies
+SET email = 'Habu@love.com'
+WHERE id = 2;
+
+UPDATE homies
+SET email = 'Les@love.com'
+WHERE id = 3;
+
+DELETE FROM homies WHERE id = 1;
+
+SELECT * FROM homies;
