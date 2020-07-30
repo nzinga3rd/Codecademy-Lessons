@@ -1,0 +1,89 @@
+#First letter
+my_name = 'Nzinga'
+first_initial = my_name[0]
+
+#Part of the word
+first_name = "Rodrigo"
+last_name = "Villanueva"
+
+new_account = last_name[:5]
+temp_password = last_name[2:6]
+
+#Pieces Together
+first_name = "Julie"
+last_name = "Blevins"
+
+def account_generator(first_name, last_name):
+  account_name = first_name[:3] + last_name[:3]
+  return account_name
+
+new_account = account_generator(first_name, last_name)
+
+#Length of strings
+first_name = "Reiko"
+last_name = "Matsuki"
+
+def password_generator(first_name, last_name):
+  last_three_letters = first_name[len(first_name)-3:] + last_name[len(last_name)-3:]
+  return last_three_letters
+
+temp_password = password_generator(first_name, last_name)
+print(temp_password)
+
+#Negative Index
+company_motto = "Copeland's Corporate Company helps you capably cope with the constant cacophony of daily life"
+
+second_to_last = company_motto[-2]
+final_word = company_motto[-4:]
+
+#Replacing the First Letter
+first_name = "Bob"
+last_name = "Daily"
+
+fixed_first_name = "R" + first_name[-2:]
+
+#Finding the length of a string
+def get_length(string):
+  length = 0
+  for i in string:
+    length += 1
+  return length
+
+#Finding the latter in a sting
+def letter_check(word, letter):
+  for w in word:
+    if w == letter:
+      return True
+  return False
+  
+#Strings and Conditionals (Part Two)
+def contains(big_string, little_string):
+  if little_string in big_string:
+    return True
+  return False 
+
+def common_letters(string_one, string_two):
+  common = []
+  for l in string_one:
+    if (l in string_one) and not (l in common):
+      common.append(l)
+        return common
+        
+#string review
+def username_generator(first_name, last_name):
+    if len(first_name) < 3:
+        user_name = first_name
+    else:
+        user_name = first_name[0:3]
+    if len(last_name) < 4:
+        user_name += last_name
+    else:
+        user_name += last_name[0:4]
+    return user_name
+  
+    
+def password_generator(user_name):
+    password = ""
+    for i in range(0, len(user_name)):
+        password += user_name[i-1]
+    return password
